@@ -6,22 +6,20 @@ const MOVIE = require('./movie');
 const helmet = require('helmet');
 
 const app = express();
-app.use(morgan());
+app.use(morgan('combined'));
 app.use(cors());
 app.use(helmet());
 
 const PORT = 8000;
 
 app.listen(PORT, () => {
-    console.log('port is listening');
+    console.log(`Listening on 127.0.0.1:${PORT}`);
 })
 
 app.use(function validateBearerToken(req, res, next) {
 
     const apiToken = process.env.API_TOKEN;
-    // console.log(apiToken);
     const authToken = req.get('Authorization');
-    // console.log(authToken);
 
     if (!authToken || authToken.split(' ')[1] !== apiToken) {
         return res.status(401).json({ error: 'Unauthorized request'});
