@@ -5,12 +5,26 @@ const cors = require('cors');
 const MOVIE = require('./movie');
 const helmet = require('helmet');
 
+const morganSetting = process.env.NODE_ENV === 'production' ? 'tiny' : 'common';
+
 const app = express();
-app.use(morgan('combined'));
+app.use(morgan(morganSetting));
 app.use(cors());
 app.use(helmet());
 
-const PORT = 8000;
+app.use((error,req, res, next) => {
+    let response;
+  
+    if (process.env.NODE_ENV === 'production') {
+      response = { error: { message:'server error' }}
+    } else {
+      resposne = { error }
+    };
+  
+    res.status(500).json(response)
+})
+
+const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
     console.log(`Listening on 127.0.0.1:${PORT}`);
