@@ -66,4 +66,5 @@ function handleGetMovie(req, res) {
     res.json(response);
 }
 
+// separating get function from movie handle
 app.get('/movie', handleGetMovie);
